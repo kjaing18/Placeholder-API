@@ -39,7 +39,7 @@ function loadPosts () {
         newButton.id = p.id;
         newButton.value = 'Show Comment';
         newButton.innerHTML = 'Show Comment';
-        newButton.addEventListener('click', onClick());
+        newButton.addEventListener('click', onClick);
         postArticle.append(newButton);
         let newSection = document.createElement('section');
         newSection.id = 'comments-' + p.id;
@@ -67,4 +67,5 @@ function onClick () {
       }
     });
 }
+
 loadPosts();
