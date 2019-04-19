@@ -47,8 +47,26 @@ function loadPosts () {
       });
     });
 }
-
 function onClick () {
+  let buttonId = this.id;
+  let sect = document.getElementById('comments-' + buttonId);
+  fetch('https://jsonplaceholder.typicode.com/comments?postId=1')
+    .then((response) => response.json())
+    .then((comments) => {
+      comments.forEach(function (c) {
+        let newComment = document.createElement('p');
+        newComment.id = c.id;
+        newComment.innerHTML = c.body;
+        sect.append(newComment);
+        let newName = document.createElement('address');
+        newName.href = 'mailto:' + c.email;
+        newName.innerHTML = c.name;
+        sect.append(newName);
+      });
+    });
+}
+/*
+function onClick (clicked_id) {
   fetch('https://jsonplaceholder.typicode.com/comments?postId=1')
     .then((response) => response.json())
     .then((comments) => {
@@ -67,5 +85,5 @@ function onClick () {
       }
     });
 }
-
+*/
 loadPosts();
