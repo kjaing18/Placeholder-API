@@ -37,7 +37,8 @@ function loadPosts () {
         postArticle.append(newBody);
         let newButton = document.createElement('button');
         newButton.id = p.id;
-        newButton.value = 'Show Comment';
+        newButton.value = '0';
+        newButton.style.display = 'inline';
         newButton.innerHTML = 'Show Comment';
         newButton.addEventListener('click', onClick);
         postArticle.append(newButton);
@@ -47,31 +48,17 @@ function loadPosts () {
       });
     });
 }
+
 function onClick () {
   let buttonId = this.id;
   let sect = document.getElementById('comments-' + buttonId);
-  fetch('https://jsonplaceholder.typicode.com/comments?postId=1')
-    .then((response) => response.json())
-    .then((comments) => {
-      comments.forEach(function (c) {
-        let newComment = document.createElement('p');
-        newComment.id = c.id;
-        newComment.innerHTML = c.body;
-        sect.append(newComment);
-        let newName = document.createElement('address');
-        newName.href = 'mailto:' + c.email;
-        newName.innerHTML = c.name;
-        sect.append(newName);
-      });
-    });
-}
-/*
-function onClick (clicked_id) {
-  fetch('https://jsonplaceholder.typicode.com/comments?postId=1')
-    .then((response) => response.json())
-    .then((comments) => {
-      for (let i = 1; i < 101; i++) {
-        let sect = document.getElementById('comments-' + i);
+  let buttonVal = parseInt(this.value, 10);
+  buttonVal++;
+  this.value = buttonVal.toString();
+  if (buttonVal === 1) {
+    fetch('https://jsonplaceholder.typicode.com/comments?postId=1')
+      .then((response) => response.json())
+      .then((comments) => {
         comments.forEach(function (c) {
           let newComment = document.createElement('p');
           newComment.id = c.id;
@@ -82,8 +69,17 @@ function onClick (clicked_id) {
           newName.innerHTML = c.name;
           sect.append(newName);
         });
-      }
-    });
+      });
+    document.getElementById(this.id).innerHTML = 'Hide Comment';
+  } else {
+    if (document.getElementById(this.id).innerHTML === 'Hide Comment') {
+      document.getElementById(this.id).innerHTML = 'Show Comment';
+      sect.style.display = 'none';
+    } else {
+      document.getElementById(this.id).innerHTML = 'Hide Comment';
+      sect.style.display = 'inline';
+    }
+  }
 }
-*/
+
 loadPosts();
