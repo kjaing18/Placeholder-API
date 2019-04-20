@@ -1,26 +1,3 @@
-/* eslint-disable no-tabs */
-/*
-var getPosts = () => {
-  fetch('https://jsonplaceholder.typicode.com/posts')
-    .then(response => response.json())
-    .then(posts => console.log(posts));
-};
-getPosts();
-*/
-/*
-document.getElementById('getPosts').addEventListener('click', function () {
-  fetch('https://jsonplaceholder.typicode.com/posts')
-    .then((response) => response.json())
-    .then((posts) => {
-      let output = document.getElementById('con');
-      posts.forEach(function (p) {
-        let newEle = document.createElement('h3');
-        newEle.innerHTML = p.title;
-        output.append(newEle);
-      });
-    });
-});
-*/
 
 function loadPosts () {
   var postArticle = document.getElementById('post-article');
@@ -33,18 +10,21 @@ function loadPosts () {
         postArticle.append(newTitle);
         let newBody = document.createElement('p');
         newBody.innerHTML = p.body;
-        // newBody.replace(/\n/g, '<br>');
+        newBody.innerHTML.replace(/\n/g, '<br>');
         postArticle.append(newBody);
         let newButton = document.createElement('button');
         newButton.id = p.id;
         newButton.value = '0';
-        newButton.style.display = 'inline';
         newButton.innerHTML = 'Show Comment';
         newButton.addEventListener('click', onClick);
         postArticle.append(newButton);
         let newSection = document.createElement('section');
         newSection.id = 'comments-' + p.id;
+        newSection.style.display = 'none';
         postArticle.append(newSection);
+        let commentHead = document.createElement('h3');
+        commentHead.innerHTML = 'Comments';
+        newSection.append(commentHead);
       });
     });
 }
@@ -53,9 +33,9 @@ function onClick () {
   let buttonId = this.id;
   let sect = document.getElementById('comments-' + buttonId);
   let buttonVal = parseInt(this.value, 10);
-  buttonVal++;
-  this.value = buttonVal.toString();
-  if (buttonVal === 1) {
+  if (buttonVal === 0) {
+    buttonVal++;
+    this.value = buttonVal.toString();
     fetch('https://jsonplaceholder.typicode.com/comments?postId=1')
       .then((response) => response.json())
       .then((comments) => {
@@ -63,6 +43,7 @@ function onClick () {
           let newComment = document.createElement('p');
           newComment.id = c.id;
           newComment.innerHTML = c.body;
+          newComment.innerHTML.replace(/\n/g, '<br>');
           sect.append(newComment);
           let newName = document.createElement('address');
           newName.href = 'mailto:' + c.email;
@@ -70,7 +51,8 @@ function onClick () {
           sect.append(newName);
         });
       });
-    document.getElementById(this.id).innerHTML = 'Hide Comment';
+    document.getElementById(buttonId).innerHTML = 'Hide Comment';
+    document.getElementById('comments-' + buttonId).style.display = 'inline';
   } else {
     if (document.getElementById(this.id).innerHTML === 'Hide Comment') {
       document.getElementById(this.id).innerHTML = 'Show Comment';
