@@ -41,7 +41,7 @@ function onClick () {
       .then((comments) => {
         comments.forEach(function (c) {
           let newComment = document.createElement('p');
-          newComment.id = c.id;
+          newComment.id = 'com' + c.id;
           newComment.innerHTML = c.body;
           newComment.innerHTML.replace(/\n/g, '<br>');
           sect.append(newComment);
@@ -54,11 +54,11 @@ function onClick () {
     document.getElementById(buttonId).innerHTML = 'Hide Comment';
     document.getElementById('comments-' + buttonId).style.display = 'inline';
   } else {
-    if (document.getElementById(this.id).innerHTML === 'Hide Comment') {
-      document.getElementById(this.id).innerHTML = 'Show Comment';
+    if (document.getElementById(buttonId).innerHTML === 'Hide Comment') {
+      document.getElementById(buttonId).innerHTML = 'Show Comment';
       sect.style.display = 'none';
     } else {
-      document.getElementById(this.id).innerHTML = 'Hide Comment';
+      document.getElementById(buttonId).innerHTML = 'Hide Comment';
       sect.style.display = 'inline';
     }
   }
